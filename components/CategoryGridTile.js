@@ -2,21 +2,9 @@ import { Text } from "react-native";
 import { StyleSheet } from "react-native";
 import { Pressable } from "react-native";
 import { View } from "react-native";
-import { useFonts } from "expo-font";
 import { Platform } from "react-native";
 
-const CategoryGridTile = ({ title, color }) => {
-  const [fontsLoaded] = useFonts({
-    "Poppins-Thin": require("../assets/fonts/Poppins-Thin.ttf"),
-    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
-    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-    "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
-
+const CategoryGridTile = ({ title, color, onPress }) => {
   return (
     <View style={styles.gridItem}>
       <Pressable
@@ -25,6 +13,7 @@ const CategoryGridTile = ({ title, color }) => {
           styles.btnStyle,
           pressed ? styles.btnPressed : "",
         ]}
+        onPress={onPress}
       >
         <View style={[styles.innerContainer, { backgroundColor: color }]}>
           <Text style={styles.categoryTitle}>{title}</Text>
