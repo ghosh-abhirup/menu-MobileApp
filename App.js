@@ -1,3 +1,4 @@
+import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text } from "react-native";
 import CategoryScreen from "./screens/CategoryScreen";
@@ -6,8 +7,12 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MealsOverviewScreen from "./screens/MealsOverviewScreen";
 import { useFonts } from "expo-font";
 import MealDetailScreen from "./screens/MealDetailScreen";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import FavouritesScreen from "./screens/FavouritesScreen";
+import { Ionicons } from "@expo/vector-icons";
 
 const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -20,6 +25,50 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
+
+  const DrawerNavigator = () => {
+    return (
+      <Drawer.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: "#343a40",
+          },
+          headerTintColor: "white",
+          sceneContainerStyle: {
+            backgroundColor: "#212529",
+          },
+          drawerContentStyle: {
+            backgroundColor: "#212529",
+          },
+          drawerInactiveTintColor: "white",
+          drawerActiveBackgroundColor: "#ffffff30",
+          drawerActiveTintColor: "white",
+        }}
+      >
+        <Drawer.Screen
+          name="MealsCategories"
+          component={CategoryScreen}
+          options={{
+            title: "All Categories",
+            drawerIcon: () => {
+              return (
+                <Ionicons name="archive-outline" color={"white"} size={24} />
+              );
+            },
+          }}
+        />
+        <Drawer.Screen
+          name="Favourites"
+          component={FavouritesScreen}
+          options={{
+            drawerIcon: () => {
+              return <Ionicons name="star" color={"white"} size={24} />;
+            },
+          }}
+        />
+      </Drawer.Navigator>
+    );
+  };
 
   return (
     <>
@@ -37,10 +86,10 @@ export default function App() {
           }}
         >
           <Stack.Screen
-            name="MealsCategories"
-            component={CategoryScreen}
+            name="AllCategories"
+            component={DrawerNavigator}
             options={{
-              title: "All Categories",
+              headerShown: false,
             }}
           />
           <Stack.Screen name="MealsOverview" component={MealsOverviewScreen} />
