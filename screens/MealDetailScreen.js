@@ -6,21 +6,39 @@ import MealDetails from "../components/MealDetails";
 import { StyleSheet } from "react-native";
 import { ScrollView } from "react-native";
 import List from "../components/MealDetail/List";
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 import IconButton from "../components/IconButton";
+import { useDispatch, useSelector } from "react-redux";
+import { addFavourite, removeFavourite } from "../store/redux/favourites";
 
 const MealDetailScreen = ({ route, navigation }) => {
+  const favouriteMealIds = useSelector((state) => state.favouriteMeals.ids);
+  const dispatch = useDispatch();
+
+  const isFav = favouriteMealIds.includes(route.params.mealId);
+
   const selectedMeal = MEALS.find((meal) => meal.id === route.params.mealId);
 
-  const pressHandler = () => {};
+  const pressHandler = () => {
+    if (isFav) {
+      dispatch(removeFavourite({ id: route.params.mealId }));
+    } else {
+      dispatch(addFavourite({ id: route.params.mealId }));
+    }
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return <IconButton onPress={pressHandler} />;
+        return (
+          <IconButton
+            icon={isFav ? "star" : "star-outline"}
+            onPress={pressHandler}
+          />
+        );
       },
     });
-  }, []);
+  }, [isFav]);
 
   return (
     <ScrollView>

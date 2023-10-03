@@ -10,6 +10,8 @@ import MealDetailScreen from "./screens/MealDetailScreen";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import FavouritesScreen from "./screens/FavouritesScreen";
 import { Ionicons } from "@expo/vector-icons";
+import { Provider } from "react-redux";
+import { store } from "./store/redux/store";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -73,29 +75,34 @@ export default function App() {
   return (
     <>
       <StatusBar style="light" />
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: "#343a40",
-            },
-            headerTintColor: "white",
-            contentStyle: {
-              backgroundColor: "#212529",
-            },
-          }}
-        >
-          <Stack.Screen
-            name="AllCategories"
-            component={DrawerNavigator}
-            options={{
-              headerShown: false,
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: "#343a40",
+              },
+              headerTintColor: "white",
+              contentStyle: {
+                backgroundColor: "#212529",
+              },
             }}
-          />
-          <Stack.Screen name="MealsOverview" component={MealsOverviewScreen} />
-          <Stack.Screen name="MealDetails" component={MealDetailScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+          >
+            <Stack.Screen
+              name="AllCategories"
+              component={DrawerNavigator}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="MealsOverview"
+              component={MealsOverviewScreen}
+            />
+            <Stack.Screen name="MealDetails" component={MealDetailScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
     </>
   );
 }
